@@ -68,6 +68,39 @@ function AdminDashboard() {
     load();
   }, []);
 
+  useEffect(() => {
+    if (!isAdmin) return;
+    const channel = supabase
+      .channel("bookings-admin")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "bookings" },
+        (payload) => {
+          setBookings((prev) => {
+            if (payload.eventType === "INSERT") {
+              const row = payload.new as Booking;
+              if (prev.some((b) => b.id === row.id)) return prev;
+              toast.success("New booking received", { description: row.full_name });
+              return [row, ...prev];
+            }
+            if (payload.eventType === "UPDATE") {
+              const row = payload.new as Booking;
+              return prev.map((b) => (b.id === row.id ? row : b));
+            }
+            if (payload.eventType === "DELETE") {
+              const row = payload.old as Booking;
+              return prev.filter((b) => b.id !== row.id);
+            }
+            return prev;
+          });
+        },
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [isAdmin]);
+
   async function signOut() {
     await supabase.auth.signOut();
     navigate({ to: "/auth" });
