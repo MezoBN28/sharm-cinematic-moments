@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
-import { Camera, Heart, Users, Building2, Waves, Film } from "lucide-react";
+import { Camera, Heart, Users, Building2, Waves, Film, Sparkles } from "lucide-react";
 import { SectionHeader } from "./SectionHeader";
 import { services } from "@/lib/site-config";
 
-const icons = [Heart, Camera, Users, Building2, Waves, Film];
+const icons = [Heart, Camera, Users, Building2, Waves, Film, Sparkles];
 
 export function Services() {
   return (
