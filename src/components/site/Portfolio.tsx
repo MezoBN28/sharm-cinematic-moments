@@ -7,6 +7,9 @@ import g2 from "@/assets/gallery-2.jpg.asset.json";
 import g3 from "@/assets/gallery-3.png.asset.json";
 import g4 from "@/assets/gallery-4.png.asset.json";
 import g5 from "@/assets/gallery-5.jpg.asset.json";
+import g9 from "@/assets/gallery-9.jpg.asset.json";
+import g10 from "@/assets/gallery-10.jpg.asset.json";
+import g11 from "@/assets/gallery-11.jpg.asset.json";
 import hero from "@/assets/hero.png.asset.json";
 
 type Cat = "all" | "performance" | "lifestyle" | "dining" | "resort";
@@ -14,6 +17,9 @@ type Cat = "all" | "performance" | "lifestyle" | "dining" | "resort";
 const items: { src: string; cat: Exclude<Cat, "all">; alt: string; tall?: boolean }[] = [
   { src: g1.url, cat: "performance", alt: "Neon lit performer cinematic portrait", tall: true },
   { src: hero.url, cat: "resort", alt: "Aerial view of luxury Sharm El Sheikh resort at sunset" },
+  { src: g9.url, cat: "lifestyle", alt: "Luxury hotel breakfast in bed lifestyle portrait", tall: true },
+  { src: g10.url, cat: "lifestyle", alt: "Editorial beach portrait at golden hour" },
+  { src: g11.url, cat: "lifestyle", alt: "Flying yellow dress cinematic seaside shoot", tall: true },
   { src: g3.url, cat: "lifestyle", alt: "Aerial acrobatic performance under stage lights", tall: true },
   { src: g5.url, cat: "dining", alt: "Chef performing fire show at fine dining restaurant" },
   { src: g4.url, cat: "dining", alt: "Cinematic cocktail on dark marble", tall: true },
