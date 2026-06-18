@@ -10,6 +10,10 @@ import g5 from "@/assets/gallery-5.jpg.asset.json";
 import g9 from "@/assets/gallery-9.jpg.asset.json";
 import g10 from "@/assets/gallery-10.jpg.asset.json";
 import g11 from "@/assets/gallery-11.jpg.asset.json";
+import g12 from "@/assets/gallery-12.jpg.asset.json";
+import g13 from "@/assets/gallery-13.jpg.asset.json";
+import g14 from "@/assets/gallery-14.jpg.asset.json";
+import g15 from "@/assets/gallery-15.jpg.asset.json";
 import hero from "@/assets/hero.png.asset.json";
 
 type Cat = "all" | "performance" | "lifestyle" | "dining" | "resort";
@@ -20,6 +24,10 @@ const items: { src: string; cat: Exclude<Cat, "all">; alt: string; tall?: boolea
   { src: g9.url, cat: "lifestyle", alt: "Luxury hotel breakfast in bed lifestyle portrait", tall: true },
   { src: g10.url, cat: "lifestyle", alt: "Editorial beach portrait at golden hour" },
   { src: g11.url, cat: "lifestyle", alt: "Flying yellow dress cinematic seaside shoot", tall: true },
+  { src: g12.url, cat: "lifestyle", alt: "Black and white editorial portrait in luxury car" },
+  { src: g13.url, cat: "performance", alt: "Red studio portrait of dancer in black dress", tall: true },
+  { src: g14.url, cat: "performance", alt: "Cage performer under red stage lights" },
+  { src: g15.url, cat: "performance", alt: "Trio of dancers in desert at sunrise", tall: true },
   { src: g3.url, cat: "lifestyle", alt: "Aerial acrobatic performance under stage lights", tall: true },
   { src: g5.url, cat: "dining", alt: "Chef performing fire show at fine dining restaurant" },
   { src: g4.url, cat: "dining", alt: "Cinematic cocktail on dark marble", tall: true },
