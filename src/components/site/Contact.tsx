@@ -19,7 +19,7 @@ export function Contact() {
           description="Reach out directly — we respond within the hour during daylight in Sharm El Sheikh."
         />
 
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {items.map((it, i) => (
             <motion.a
               key={it.label}
