@@ -34,16 +34,26 @@ export function BookingForm() {
       return;
     }
     setLoading(true);
-    const { error } = await supabase.from("bookings").insert({
-      ...parsed.data,
-      service_type: parsed.data.service_type || null,
-      notes: parsed.data.notes || null,
-    });
+    const { data: inserted, error } = await supabase
+      .from("bookings")
+      .insert({
+        ...parsed.data,
+        service_type: parsed.data.service_type || null,
+        notes: parsed.data.notes || null,
+      })
+      .select()
+      .single();
     setLoading(false);
     if (error) {
       toast.error("Booking failed", { description: error.message });
       return;
     }
+    // Fire-and-forget notification (Zapier → email + WhatsApp)
+    void fetch("/api/public/notify-booking", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(inserted ?? parsed.data),
+    }).catch(() => {});
     toast.success("Booking received", {
       description: "We'll be in touch shortly to confirm your session.",
     });
