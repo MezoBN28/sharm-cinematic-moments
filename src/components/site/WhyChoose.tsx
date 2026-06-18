@@ -11,7 +11,7 @@ export function WhyChoose() {
     <section id="why" className="relative overflow-hidden bg-gradient-onyx py-28 md:py-36">
       <div
         className="absolute inset-0 opacity-20"
-        style={{ backgroundImage: `url(${img})`, backgroundSize: "cover", backgroundPosition: "center" }}
+        style={{ backgroundImage: `url(${img.url})`, backgroundSize: "cover", backgroundPosition: "center" }}
       />
       <div className="absolute inset-0 bg-background/85" />
 
