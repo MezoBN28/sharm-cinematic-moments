@@ -1,17 +1,19 @@
 import { motion } from "framer-motion";
-import heroImg from "@/assets/hero.jpg";
+import heroAsset from "@/assets/hero.png.asset.json";
 
 export function Hero() {
   return (
     <section id="home" className="relative h-screen min-h-[640px] w-full overflow-hidden">
       <img
-        src={heroImg}
-        alt="Cinematic photography in Sharm El Sheikh at golden hour"
+        src={heroAsset.url}
+        alt="Aerial cinematic view of a luxury Sharm El Sheikh resort at sunset"
         className="absolute inset-0 h-full w-full object-cover"
         width={1920}
         height={1080}
+        fetchPriority="high"
       />
       <div className="absolute inset-0 bg-hero-overlay" />
+      <div className="absolute inset-0 bg-gradient-to-t from-onyx via-onyx/40 to-onyx/30" />
 
       <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col items-center justify-center px-6 text-center">
         <motion.span
@@ -27,11 +29,14 @@ export function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.15 }}
-          className="font-display text-5xl leading-[1.05] text-foreground md:text-7xl lg:text-8xl"
+          className="font-display text-4xl leading-[1.05] text-foreground md:text-6xl lg:text-7xl"
         >
-          Capture Your Sharm
+          <span className="mr-3 align-middle text-3xl md:text-5xl">🎥</span>
+          <span className="text-gradient-gold">Cinematic Videography</span>
           <br />
-          Experience <em className="text-gradient-gold not-italic">Forever</em>
+          <span className="text-foreground/90">&amp;</span>{" "}
+          <em className="text-gradient-gold not-italic">Premium Photography</em>
+          <span className="ml-3 align-middle text-3xl md:text-5xl">📷</span>
         </motion.h1>
 
         <motion.p
@@ -40,8 +45,9 @@ export function Hero() {
           transition={{ duration: 1, delay: 0.35 }}
           className="mt-8 max-w-2xl text-base text-foreground/80 md:text-lg"
         >
-          Professional cinematic photography for unforgettable moments inside
-          Sharm El Sheikh's finest hotels and resorts.
+          Professional cinematic videography & premium photography for
+          unforgettable moments inside Sharm El Sheikh's finest hotels and
+          resorts.
         </motion.p>
 
         <motion.div

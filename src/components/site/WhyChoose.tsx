@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Award, Sparkles, Zap, Wand2, UserCheck } from "lucide-react";
 import { SectionHeader } from "./SectionHeader";
 import { whyChoose } from "@/lib/site-config";
-import img from "@/assets/gallery-6.jpg";
+import img from "@/assets/gallery-1.png.asset.json";
 
 const icons = [Award, Sparkles, Zap, Wand2, UserCheck];
 
@@ -11,7 +11,7 @@ export function WhyChoose() {
     <section id="why" className="relative overflow-hidden bg-gradient-onyx py-28 md:py-36">
       <div
         className="absolute inset-0 opacity-20"
-        style={{ backgroundImage: `url(${img})`, backgroundSize: "cover", backgroundPosition: "center" }}
+        style={{ backgroundImage: `url(${img.url})`, backgroundSize: "cover", backgroundPosition: "center" }}
       />
       <div className="absolute inset-0 bg-background/85" />
 

@@ -2,35 +2,30 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { SectionHeader } from "./SectionHeader";
-import g1 from "@/assets/gallery-1.jpg";
-import g2 from "@/assets/gallery-2.jpg";
-import g3 from "@/assets/gallery-3.jpg";
-import g4 from "@/assets/gallery-4.jpg";
-import g5 from "@/assets/gallery-5.jpg";
-import g6 from "@/assets/gallery-6.jpg";
-import g7 from "@/assets/gallery-7.jpg";
-import g8 from "@/assets/gallery-8.jpg";
+import g1 from "@/assets/gallery-1.png.asset.json";
+import g2 from "@/assets/gallery-2.jpg.asset.json";
+import g3 from "@/assets/gallery-3.png.asset.json";
+import g4 from "@/assets/gallery-4.png.asset.json";
+import g5 from "@/assets/gallery-5.jpg.asset.json";
+import hero from "@/assets/hero.png.asset.json";
 
-type Cat = "all" | "couples" | "honeymoon" | "family" | "resort" | "beach";
+type Cat = "all" | "performance" | "lifestyle" | "dining" | "resort";
 
 const items: { src: string; cat: Exclude<Cat, "all">; alt: string; tall?: boolean }[] = [
-  { src: g1, cat: "couples", alt: "Couple at sunset", tall: true },
-  { src: g2, cat: "honeymoon", alt: "Honeymoon at infinity pool" },
-  { src: g3, cat: "family", alt: "Family on beach", tall: true },
-  { src: g4, cat: "resort", alt: "Resort architecture" },
-  { src: g5, cat: "beach", alt: "Silhouette on beach", tall: true },
-  { src: g6, cat: "honeymoon", alt: "Bride by the Red Sea", tall: true },
-  { src: g7, cat: "beach", alt: "Underwater snorkeling" },
-  { src: g8, cat: "family", alt: "Children playing at sunset", tall: true },
+  { src: g1.url, cat: "performance", alt: "Neon lit performer cinematic portrait", tall: true },
+  { src: hero.url, cat: "resort", alt: "Aerial view of luxury Sharm El Sheikh resort at sunset" },
+  { src: g3.url, cat: "lifestyle", alt: "Aerial acrobatic performance under stage lights", tall: true },
+  { src: g5.url, cat: "dining", alt: "Chef performing fire show at fine dining restaurant" },
+  { src: g4.url, cat: "dining", alt: "Cinematic cocktail on dark marble", tall: true },
+  { src: g2.url, cat: "lifestyle", alt: "Bloody Mary cocktail with herbs and ice" },
 ];
 
 const filters: { key: Cat; label: string }[] = [
   { key: "all", label: "All" },
-  { key: "couples", label: "Couples" },
-  { key: "honeymoon", label: "Honeymoon" },
-  { key: "family", label: "Family" },
   { key: "resort", label: "Resort" },
-  { key: "beach", label: "Beach" },
+  { key: "lifestyle", label: "Lifestyle" },
+  { key: "dining", label: "Dining" },
+  { key: "performance", label: "Performance" },
 ];
 
 export function Portfolio() {
@@ -45,7 +40,7 @@ export function Portfolio() {
         <SectionHeader
           eyebrow="Portfolio"
           title={<>A gallery of <em className="text-gradient-gold not-italic">light & story.</em></>}
-          description="A curated selection of cinematic frames from sessions across Sharm El Sheikh."
+          description="A curated selection of cinematic frames captured across Sharm El Sheikh."
         />
 
         <div className="mb-12 flex flex-wrap justify-center gap-2">

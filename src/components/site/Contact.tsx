@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Phone, Mail, MessageCircle } from "lucide-react";
+import { Phone, Mail, MessageCircle, Instagram } from "lucide-react";
 import { SectionHeader } from "./SectionHeader";
 import { siteConfig } from "@/lib/site-config";
 
@@ -8,6 +8,7 @@ export function Contact() {
     { icon: Phone, label: "Call", value: siteConfig.phone, href: siteConfig.phoneHref },
     { icon: MessageCircle, label: "WhatsApp", value: siteConfig.whatsapp, href: siteConfig.whatsappHref },
     { icon: Mail, label: "Email", value: siteConfig.email, href: siteConfig.emailHref },
+    { icon: Instagram, label: "Instagram", value: siteConfig.instagram, href: siteConfig.instagramHref },
   ];
   return (
     <section id="contact" className="relative bg-gradient-onyx py-28 md:py-36">
@@ -18,7 +19,7 @@ export function Contact() {
           description="Reach out directly — we respond within the hour during daylight in Sharm El Sheikh."
         />
 
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {items.map((it, i) => (
             <motion.a
               key={it.label}
