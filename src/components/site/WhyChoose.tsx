@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Award, Sparkles, Zap, Wand2, UserCheck } from "lucide-react";
 import { SectionHeader } from "./SectionHeader";
 import { whyChoose } from "@/lib/site-config";
-import img from "@/assets/gallery-6.jpg";
+import img from "@/assets/gallery-1.png.asset.json";
 
 const icons = [Award, Sparkles, Zap, Wand2, UserCheck];
 
