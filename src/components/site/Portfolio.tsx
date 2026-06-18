@@ -14,6 +14,11 @@ import g12 from "@/assets/gallery-12.jpg.asset.json";
 import g13 from "@/assets/gallery-13.jpg.asset.json";
 import g14 from "@/assets/gallery-14.jpg.asset.json";
 import g15 from "@/assets/gallery-15.jpg.asset.json";
+import g16 from "@/assets/gallery-16.jpg.asset.json";
+import g17 from "@/assets/gallery-17.jpg.asset.json";
+import g18 from "@/assets/gallery-18.jpg.asset.json";
+import g19 from "@/assets/gallery-19.jpg.asset.json";
+import g20 from "@/assets/gallery-20.jpg.asset.json";
 import hero from "@/assets/hero.png.asset.json";
 
 type Cat = "all" | "performance" | "lifestyle" | "dining" | "resort";
@@ -28,6 +33,11 @@ const items: { src: string; cat: Exclude<Cat, "all">; alt: string; tall?: boolea
   { src: g13.url, cat: "performance", alt: "Red studio portrait of dancer in black dress", tall: true },
   { src: g14.url, cat: "performance", alt: "Cage performer under red stage lights" },
   { src: g15.url, cat: "performance", alt: "Trio of dancers in desert at sunrise", tall: true },
+  { src: g16.url, cat: "performance", alt: "Desert editorial portrait seated among Sharm mountains" },
+  { src: g17.url, cat: "performance", alt: "Sequined desert fashion pose against open sky", tall: true },
+  { src: g18.url, cat: "lifestyle", alt: "Luxury white deck fashion portrait by the sea" },
+  { src: g19.url, cat: "performance", alt: "Stage dance performance at a Sharm resort event", tall: true },
+  { src: g20.url, cat: "lifestyle", alt: "Elegant resort balcony portrait with designer handbag" },
   { src: g3.url, cat: "lifestyle", alt: "Aerial acrobatic performance under stage lights", tall: true },
   { src: g5.url, cat: "dining", alt: "Chef performing fire show at fine dining restaurant" },
   { src: g4.url, cat: "dining", alt: "Cinematic cocktail on dark marble", tall: true },
