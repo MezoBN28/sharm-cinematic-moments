@@ -20,41 +20,45 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9 }}
-          className="mb-8 text-[0.7rem] uppercase tracking-[0.5em] text-gold"
+          className="mb-6 text-[0.65rem] uppercase tracking-[0.5em] text-gold md:text-xs"
         >
           Sharm El Sheikh · Egypt
         </motion.span>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.15 }}
-          className="font-display text-4xl leading-[1.05] text-foreground md:text-6xl lg:text-7xl"
+        <motion.div
+          initial={{ opacity: 0, scale: 0.92 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.1, delay: 0.1 }}
+          className="flex flex-col items-center"
         >
-          <span className="mr-3 align-middle text-3xl md:text-5xl">🎥</span>
-          <span className="text-gradient-gold">Cinematic Videography</span>
-          <br />
-          <span className="text-foreground/90">&amp;</span>{" "}
-          <em className="text-gradient-gold not-italic">Premium Photography</em>
-          <span className="ml-3 align-middle text-3xl md:text-5xl">📷</span>
-        </motion.h1>
+          <div className="mb-4 h-px w-24 bg-gradient-to-r from-transparent via-gold to-transparent" />
+          <h1 className="font-display text-[4.5rem] leading-none tracking-[0.05em] text-gradient-gold md:text-[7rem] lg:text-[8.5rem]">
+            Luca
+          </h1>
+          <div className="mt-4 h-px w-24 bg-gradient-to-r from-transparent via-gold to-transparent" />
+          <p className="mt-5 text-[0.65rem] uppercase tracking-[0.5em] text-foreground/85 md:text-xs">
+            Professional Cinematic Videographer &amp; Photographer
+          </p>
+          <p className="mt-3 font-display text-xs italic tracking-[0.2em] text-foreground/55 md:text-sm">
+            Khalid Ramadan Shaaban
+          </p>
+        </motion.div>
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.35 }}
-          className="mt-8 max-w-2xl text-base text-foreground/80 md:text-lg"
+          transition={{ duration: 1, delay: 0.45 }}
+          className="mt-10 max-w-2xl text-sm text-foreground/75 md:text-base"
         >
-          Professional cinematic videography & premium photography for
-          unforgettable moments inside Sharm El Sheikh's finest hotels and
-          resorts.
+          Cinematic videography &amp; premium photography for unforgettable
+          moments inside Sharm El Sheikh's finest hotels and resorts.
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.55 }}
-          className="mt-12 flex flex-col items-center gap-4 sm:flex-row"
+          transition={{ duration: 1, delay: 0.6 }}
+          className="mt-10 flex flex-col items-center gap-4 sm:flex-row"
         >
           <a
             href="#booking"

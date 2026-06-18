@@ -83,33 +83,38 @@ export function Portfolio() {
           ))}
         </div>
 
-        <motion.div layout className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+        <motion.div
+          layout
+          className="columns-1 gap-5 sm:columns-2 lg:columns-3 xl:columns-4 [column-fill:_balance]"
+        >
           <AnimatePresence mode="popLayout">
             {visible.map((i) => (
               <motion.button
                 layout
                 key={i.src}
                 onClick={() => setActive(i.src)}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.4 }}
-                className={`group relative overflow-hidden rounded-sm bg-card shadow-luxe ${
-                  i.tall ? "row-span-2 aspect-[3/4]" : "aspect-square"
-                }`}
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                className="group relative mb-5 block w-full break-inside-avoid overflow-hidden rounded-md border border-gold/10 bg-card shadow-luxe ring-1 ring-inset ring-white/[0.03] transition-all duration-500 hover:border-gold/40 hover:shadow-gold-glow"
               >
-                <img
-                  src={i.src}
-                  alt={i.alt}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-onyx/80 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                <div className="absolute bottom-0 left-0 p-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                  <span className="text-[0.6rem] uppercase tracking-[0.3em] text-gold">
+                <div className="overflow-hidden">
+                  <img
+                    src={i.src}
+                    alt={i.alt}
+                    loading="lazy"
+                    className="block h-auto w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.06]"
+                  />
+                </div>
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-onyx via-onyx/30 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between p-5 opacity-0 transition-all duration-500 group-hover:opacity-100">
+                  <span className="text-[0.6rem] uppercase tracking-[0.4em] text-gold">
                     {i.cat}
                   </span>
+                  <span className="h-px w-10 bg-gold/70" />
                 </div>
+                <div className="pointer-events-none absolute inset-0 rounded-md ring-1 ring-inset ring-gold/0 transition-all duration-500 group-hover:ring-gold/30" />
               </motion.button>
             ))}
           </AnimatePresence>
