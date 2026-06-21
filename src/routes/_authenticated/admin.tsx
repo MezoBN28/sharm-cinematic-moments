@@ -37,8 +37,38 @@ function AdminDashboard() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  const [visitors, setVisitors] = useState({ today: 0, week: 0, todayUnique: 0, weekUnique: 0 });
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<"all" | Booking["status"]>("all");
+
+  async function loadVisitors() {
+    const now = new Date();
+    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
+    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
+    const { data, error } = await supabase
+      .from("visitor_events")
+      .select("created_at, session_id")
+      .gte("created_at", weekAgo);
+    if (error || !data) return;
+    const today: typeof data = [];
+    const week = data;
+    const todaySessions = new Set<string>();
+    const weekSessions = new Set<string>();
+    for (const r of data) {
+      if (r.session_id) weekSessions.add(r.session_id);
+      if (r.created_at >= startOfDay) {
+        today.push(r);
+        if (r.session_id) todaySessions.add(r.session_id);
+      }
+    }
+    setVisitors({
+      today: today.length,
+      week: week.length,
+      todayUnique: todaySessions.size,
+      weekUnique: weekSessions.size,
+    });
+  }
+
 
   async function load() {
     setLoading(true);
@@ -61,8 +91,10 @@ function AdminDashboard() {
       .order("created_at", { ascending: false });
     if (error) toast.error(error.message);
     setBookings((data ?? []) as Booking[]);
+    await loadVisitors();
     setLoading(false);
   }
+
 
   useEffect(() => {
     load();
@@ -207,19 +239,41 @@ function AdminDashboard() {
       </header>
 
       <main className="mx-auto max-w-7xl px-6 py-10">
-        <div className="grid gap-4 md:grid-cols-4">
-          {[
-            { k: "Total", v: stats.total },
-            { k: "Pending", v: stats.pending },
-            { k: "Upcoming", v: stats.upcoming },
-            { k: "Confirmed", v: stats.confirmed },
-          ].map((s) => (
-            <div key={s.k} className="rounded-sm border border-border bg-card p-6">
-              <div className="text-[0.65rem] uppercase tracking-[0.3em] text-muted-foreground">{s.k}</div>
-              <div className="mt-2 font-display text-4xl text-gradient-gold">{s.v}</div>
-            </div>
-          ))}
+        <div>
+          <div className="mb-3 text-[0.6rem] uppercase tracking-[0.35em] text-gold">Visitor Analytics</div>
+          <div className="grid gap-4 md:grid-cols-4">
+            {[
+              { k: "Visitors Today", v: visitors.today, sub: `${visitors.todayUnique} unique` },
+              { k: "Visitors This Week", v: visitors.week, sub: `${visitors.weekUnique} unique` },
+              { k: "Unique Today", v: visitors.todayUnique, sub: "sessions" },
+              { k: "Unique This Week", v: visitors.weekUnique, sub: "sessions" },
+            ].map((s) => (
+              <div key={s.k} className="rounded-sm border border-gold/20 bg-card/60 p-6 backdrop-blur-xl">
+                <div className="text-[0.65rem] uppercase tracking-[0.3em] text-muted-foreground">{s.k}</div>
+                <div className="mt-2 font-display text-4xl text-gradient-gold">{s.v}</div>
+                <div className="mt-1 text-[0.6rem] uppercase tracking-[0.25em] text-muted-foreground/70">{s.sub}</div>
+              </div>
+            ))}
+          </div>
         </div>
+
+        <div className="mt-10">
+          <div className="mb-3 text-[0.6rem] uppercase tracking-[0.35em] text-gold">Bookings</div>
+          <div className="grid gap-4 md:grid-cols-4">
+            {[
+              { k: "Total", v: stats.total },
+              { k: "Pending", v: stats.pending },
+              { k: "Upcoming", v: stats.upcoming },
+              { k: "Confirmed", v: stats.confirmed },
+            ].map((s) => (
+              <div key={s.k} className="rounded-sm border border-border bg-card p-6">
+                <div className="text-[0.65rem] uppercase tracking-[0.3em] text-muted-foreground">{s.k}</div>
+                <div className="mt-2 font-display text-4xl text-gradient-gold">{s.v}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
 
         <div className="mt-8 flex flex-wrap items-center gap-3 rounded-sm border border-border bg-card p-4">
           <div className="relative flex-1 min-w-[220px]">

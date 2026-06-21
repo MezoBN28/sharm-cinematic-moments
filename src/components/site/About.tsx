@@ -1,9 +1,11 @@
 import { motion } from "framer-motion";
 import { SectionHeader } from "./SectionHeader";
+import { useI18n } from "@/lib/i18n";
 import img from "@/assets/gallery-3.png.asset.json";
 import { siteConfig } from "@/lib/site-config";
 
 export function About() {
+  const { t } = useI18n();
   return (
     <section id="about" className="relative bg-background py-28 md:py-36">
       <div className="mx-auto grid max-w-7xl items-center gap-16 px-6 lg:grid-cols-2">
@@ -27,15 +29,15 @@ export function About() {
 
         <div>
           <SectionHeader
-            eyebrow="About Sharm Cinematic"
-            title={<>Memories crafted <em className="text-gradient-gold not-italic">like cinema.</em></>}
-            description="Sharm Cinematic is a private photography & videography service dedicated to guests of Sharm El Sheikh's most prestigious hotels and resorts. We come to you — directing intimate, cinematic sessions that transform your stay into a film you'll relive forever."
+            eyebrow={t("about.eyebrow")}
+            title={<>{t("about.titleA")} <em className="text-gradient-gold not-italic">{t("about.titleB")}</em></>}
+            description={t("about.desc")}
             align="left"
           />
 
           <div className="mt-2 rounded-sm border border-gold/30 bg-card/40 p-5">
             <div className="text-[0.6rem] uppercase tracking-[0.35em] text-gold">
-              Lead Photographer
+              {t("about.lead")}
             </div>
             <div className="mt-2 font-display text-2xl text-foreground">
               {siteConfig.photographer}

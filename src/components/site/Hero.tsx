@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
+import { useI18n } from "@/lib/i18n";
 import heroAsset from "@/assets/hero.png.asset.json";
 
 export function Hero() {
+  const { t } = useI18n();
   return (
     <section id="home" className="relative h-screen min-h-[640px] w-full overflow-hidden">
       <img
@@ -22,7 +24,7 @@ export function Hero() {
           transition={{ duration: 0.9 }}
           className="mb-6 text-[0.65rem] uppercase tracking-[0.5em] text-gold md:text-xs"
         >
-          Sharm El Sheikh · Egypt
+          {t("hero.location")}
         </motion.span>
 
         <motion.div
@@ -37,7 +39,7 @@ export function Hero() {
           </h1>
           <div className="mt-4 h-px w-24 bg-gradient-to-r from-transparent via-gold to-transparent" />
           <p className="mt-5 text-[0.65rem] uppercase tracking-[0.5em] text-foreground/85 md:text-xs">
-            Professional Cinematic Videographer &amp; Photographer
+            {t("hero.role")}
           </p>
           <p className="mt-3 font-display text-xs italic tracking-[0.2em] text-foreground/55 md:text-sm">
             Khalid Ramadan Shaaban
@@ -50,8 +52,7 @@ export function Hero() {
           transition={{ duration: 1, delay: 0.45 }}
           className="mt-10 max-w-2xl text-sm text-foreground/75 md:text-base"
         >
-          Cinematic videography &amp; premium photography for unforgettable
-          moments inside Sharm El Sheikh's finest hotels and resorts.
+          {t("hero.desc")}
         </motion.p>
 
         <motion.div
@@ -64,13 +65,13 @@ export function Hero() {
             href="#booking"
             className="group relative overflow-hidden rounded-full bg-gradient-gold px-10 py-4 text-xs font-semibold uppercase tracking-[0.25em] text-primary-foreground shadow-gold-glow transition-transform hover:scale-105"
           >
-            Book Your Session
+            {t("hero.cta1")}
           </a>
           <a
             href="#portfolio"
             className="rounded-full border border-gold/60 px-10 py-4 text-xs font-semibold uppercase tracking-[0.25em] text-foreground transition-colors hover:bg-gold/10"
           >
-            View Portfolio
+            {t("hero.cta2")}
           </a>
         </motion.div>
       </div>
@@ -82,7 +83,7 @@ export function Hero() {
         className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2"
       >
         <div className="flex flex-col items-center gap-2 text-gold/70">
-          <span className="text-[0.6rem] uppercase tracking-[0.4em]">Scroll</span>
+          <span className="text-[0.6rem] uppercase tracking-[0.4em]">{t("hero.scroll")}</span>
           <div className="h-12 w-px bg-gradient-to-b from-gold to-transparent" />
         </div>
       </motion.div>

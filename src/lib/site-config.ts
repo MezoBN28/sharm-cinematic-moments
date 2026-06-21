@@ -33,7 +33,9 @@ export const whyChoose = [
 ];
 
 export const testimonials = [
-  { name: "Sophie & James", from: "London, UK", quote: "The most magical morning of our honeymoon. Every photo feels like a film still." },
-  { name: "The Karlsson Family", from: "Stockholm, Sweden", quote: "Patient with the kids, masterful with the light. We will treasure these forever." },
-  { name: "Aisha & Omar", from: "Dubai, UAE", quote: "Pure luxury. From the planning to the delivery — flawless and deeply personal." },
+  { name: "Sophie & James", from: "London, UK", rating: 5, quote: "The most magical morning of our honeymoon. Every photo feels like a film still." },
+  { name: "The Karlsson Family", from: "Stockholm, Sweden", rating: 5, quote: "Patient with the kids, masterful with the light. We will treasure these forever." },
+  { name: "Aisha & Omar", from: "Dubai, UAE", rating: 5, quote: "Pure luxury. From the planning to the delivery — flawless and deeply personal." },
+  { name: "Marco & Elena", from: "Milan, Italy", rating: 5, quote: "Cinematic, romantic, unforgettable. Luca captured our love like a movie." },
+  { name: "The Al-Mansouri Family", from: "Riyadh, KSA", rating: 5, quote: "Exceptional service from start to finish. The photos are pure art." },
 ];

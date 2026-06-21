@@ -1,22 +1,24 @@
 import { motion } from "framer-motion";
 import { Phone, Mail, MessageCircle, Instagram } from "lucide-react";
 import { SectionHeader } from "./SectionHeader";
+import { useI18n } from "@/lib/i18n";
 import { siteConfig } from "@/lib/site-config";
 
 export function Contact() {
+  const { t } = useI18n();
   const items = [
-    { icon: Phone, label: "Call", value: siteConfig.phone, href: siteConfig.phoneHref },
-    { icon: MessageCircle, label: "WhatsApp", value: siteConfig.whatsapp, href: siteConfig.whatsappHref },
-    { icon: Mail, label: "Email", value: siteConfig.email, href: siteConfig.emailHref },
-    { icon: Instagram, label: "Instagram", value: siteConfig.instagram, href: siteConfig.instagramHref },
+    { icon: Phone, label: t("contact.call"), value: siteConfig.phone, href: siteConfig.phoneHref },
+    { icon: MessageCircle, label: t("contact.whatsapp"), value: siteConfig.whatsapp, href: siteConfig.whatsappHref },
+    { icon: Mail, label: t("contact.email"), value: siteConfig.email, href: siteConfig.emailHref },
+    { icon: Instagram, label: t("contact.instagram"), value: siteConfig.instagram, href: siteConfig.instagramHref },
   ];
   return (
     <section id="contact" className="relative bg-gradient-onyx py-28 md:py-36">
       <div className="mx-auto max-w-6xl px-6">
         <SectionHeader
-          eyebrow="Get in Touch"
-          title={<>Let's make something <em className="text-gradient-gold not-italic">unforgettable.</em></>}
-          description="Reach out directly — we respond within the hour during daylight in Sharm El Sheikh."
+          eyebrow={t("contact.eyebrow")}
+          title={<>{t("contact.titleA")} <em className="text-gradient-gold not-italic">{t("contact.titleB")}</em></>}
+          description={t("contact.desc")}
         />
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

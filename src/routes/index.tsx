@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { Toaster } from "sonner";
 import { Navbar } from "@/components/site/Navbar";
 import { Hero } from "@/components/site/Hero";
@@ -11,6 +12,9 @@ import { Contact } from "@/components/site/Contact";
 import { BookingForm } from "@/components/site/BookingForm";
 import { Footer } from "@/components/site/Footer";
 import { FloatingActions } from "@/components/site/FloatingActions";
+import { MobileBookButton } from "@/components/site/MobileBookButton";
+import { I18nProvider } from "@/lib/i18n";
+import { trackVisit } from "@/lib/visitor-tracker";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -63,22 +67,29 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  useEffect(() => {
+    void trackVisit("/");
+  }, []);
+
   return (
-    <div className="bg-background text-foreground">
-      <Toaster theme="dark" position="top-center" />
-      <Navbar />
-      <main>
-        <Hero />
-        <About />
-        <Portfolio />
-        <Services />
-        <WhyChoose />
-        <Testimonials />
-        <Contact />
-        <BookingForm />
-      </main>
-      <Footer />
-      <FloatingActions />
-    </div>
+    <I18nProvider>
+      <div className="bg-background text-foreground">
+        <Toaster theme="dark" position="top-center" />
+        <Navbar />
+        <main>
+          <Hero />
+          <About />
+          <Portfolio />
+          <Services />
+          <WhyChoose />
+          <Testimonials />
+          <Contact />
+          <BookingForm />
+        </main>
+        <Footer />
+        <FloatingActions />
+        <MobileBookButton />
+      </div>
+    </I18nProvider>
   );
 }
