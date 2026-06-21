@@ -37,8 +37,38 @@ function AdminDashboard() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  const [visitors, setVisitors] = useState({ today: 0, week: 0, todayUnique: 0, weekUnique: 0 });
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<"all" | Booking["status"]>("all");
+
+  async function loadVisitors() {
+    const now = new Date();
+    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
+    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
+    const { data, error } = await supabase
+      .from("visitor_events")
+      .select("created_at, session_id")
+      .gte("created_at", weekAgo);
+    if (error || !data) return;
+    const today: typeof data = [];
+    const week = data;
+    const todaySessions = new Set<string>();
+    const weekSessions = new Set<string>();
+    for (const r of data) {
+      if (r.session_id) weekSessions.add(r.session_id);
+      if (r.created_at >= startOfDay) {
+        today.push(r);
+        if (r.session_id) todaySessions.add(r.session_id);
+      }
+    }
+    setVisitors({
+      today: today.length,
+      week: week.length,
+      todayUnique: todaySessions.size,
+      weekUnique: weekSessions.size,
+    });
+  }
+
 
   async function load() {
     setLoading(true);
@@ -61,8 +91,10 @@ function AdminDashboard() {
       .order("created_at", { ascending: false });
     if (error) toast.error(error.message);
     setBookings((data ?? []) as Booking[]);
+    await loadVisitors();
     setLoading(false);
   }
+
 
   useEffect(() => {
     load();
