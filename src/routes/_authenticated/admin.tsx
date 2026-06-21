@@ -239,19 +239,41 @@ function AdminDashboard() {
       </header>
 
       <main className="mx-auto max-w-7xl px-6 py-10">
-        <div className="grid gap-4 md:grid-cols-4">
-          {[
-            { k: "Total", v: stats.total },
-            { k: "Pending", v: stats.pending },
-            { k: "Upcoming", v: stats.upcoming },
-            { k: "Confirmed", v: stats.confirmed },
-          ].map((s) => (
-            <div key={s.k} className="rounded-sm border border-border bg-card p-6">
-              <div className="text-[0.65rem] uppercase tracking-[0.3em] text-muted-foreground">{s.k}</div>
-              <div className="mt-2 font-display text-4xl text-gradient-gold">{s.v}</div>
-            </div>
-          ))}
+        <div>
+          <div className="mb-3 text-[0.6rem] uppercase tracking-[0.35em] text-gold">Visitor Analytics</div>
+          <div className="grid gap-4 md:grid-cols-4">
+            {[
+              { k: "Visitors Today", v: visitors.today, sub: `${visitors.todayUnique} unique` },
+              { k: "Visitors This Week", v: visitors.week, sub: `${visitors.weekUnique} unique` },
+              { k: "Unique Today", v: visitors.todayUnique, sub: "sessions" },
+              { k: "Unique This Week", v: visitors.weekUnique, sub: "sessions" },
+            ].map((s) => (
+              <div key={s.k} className="rounded-sm border border-gold/20 bg-card/60 p-6 backdrop-blur-xl">
+                <div className="text-[0.65rem] uppercase tracking-[0.3em] text-muted-foreground">{s.k}</div>
+                <div className="mt-2 font-display text-4xl text-gradient-gold">{s.v}</div>
+                <div className="mt-1 text-[0.6rem] uppercase tracking-[0.25em] text-muted-foreground/70">{s.sub}</div>
+              </div>
+            ))}
+          </div>
         </div>
+
+        <div className="mt-10">
+          <div className="mb-3 text-[0.6rem] uppercase tracking-[0.35em] text-gold">Bookings</div>
+          <div className="grid gap-4 md:grid-cols-4">
+            {[
+              { k: "Total", v: stats.total },
+              { k: "Pending", v: stats.pending },
+              { k: "Upcoming", v: stats.upcoming },
+              { k: "Confirmed", v: stats.confirmed },
+            ].map((s) => (
+              <div key={s.k} className="rounded-sm border border-border bg-card p-6">
+                <div className="text-[0.65rem] uppercase tracking-[0.3em] text-muted-foreground">{s.k}</div>
+                <div className="mt-2 font-display text-4xl text-gradient-gold">{s.v}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
 
         <div className="mt-8 flex flex-wrap items-center gap-3 rounded-sm border border-border bg-card p-4">
           <div className="relative flex-1 min-w-[220px]">
