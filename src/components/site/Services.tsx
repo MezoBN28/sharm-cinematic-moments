@@ -1,18 +1,20 @@
 import { motion } from "framer-motion";
 import { Camera, Heart, Users, Building2, Waves, Film, Sparkles } from "lucide-react";
 import { SectionHeader } from "./SectionHeader";
+import { useI18n } from "@/lib/i18n";
 import { services } from "@/lib/site-config";
 
 const icons = [Heart, Camera, Users, Building2, Waves, Film, Sparkles];
 
 export function Services() {
+  const { t } = useI18n();
   return (
     <section id="services" className="relative bg-background py-28 md:py-36">
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeader
-          eyebrow="Our Services"
-          title={<>Sessions designed <em className="text-gradient-gold not-italic">for every story.</em></>}
-          description="From intimate couples shoots to full cinematic productions — every session is private, directed, and crafted around you."
+          eyebrow={t("services.eyebrow")}
+          title={<>{t("services.titleA")} <em className="text-gradient-gold not-italic">{t("services.titleB")}</em></>}
+          description={t("services.desc")}
         />
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

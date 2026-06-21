@@ -1,8 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import { Instagram, Mail, Phone, MessageCircle } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
+import { useI18n } from "@/lib/i18n";
 
 export function Footer() {
+  const { t } = useI18n();
   return (
     <footer className="relative border-t border-border bg-onyx py-16">
       <div className="mx-auto grid max-w-7xl gap-12 px-6 md:grid-cols-3">
@@ -12,7 +14,7 @@ export function Footer() {
             <span className="font-display text-2xl tracking-[0.3em] text-foreground/90">CINEMATIC</span>
           </div>
           <p className="mt-4 max-w-sm text-sm text-muted-foreground">
-            Cinematic videography & premium photography for travelers staying in Sharm El Sheikh's finest hotels and resorts.
+            {t("footer.tagline")}
           </p>
           <a
             href={siteConfig.instagramHref}
@@ -26,17 +28,17 @@ export function Footer() {
         </div>
 
         <div>
-          <h4 className="text-[0.65rem] uppercase tracking-[0.3em] text-gold">Explore</h4>
+          <h4 className="text-[0.65rem] uppercase tracking-[0.3em] text-gold">{t("footer.explore")}</h4>
           <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-            <li><a href="#portfolio" className="hover:text-gold">Portfolio</a></li>
-            <li><a href="#services" className="hover:text-gold">Services</a></li>
-            <li><a href="#booking" className="hover:text-gold">Book a Session</a></li>
-            <li><Link to="/auth" className="hover:text-gold">Admin Login</Link></li>
+            <li><a href="#portfolio" className="hover:text-gold">{t("nav.portfolio")}</a></li>
+            <li><a href="#services" className="hover:text-gold">{t("nav.services")}</a></li>
+            <li><a href="#booking" className="hover:text-gold">{t("nav.book")}</a></li>
+            <li><Link to="/auth" className="hover:text-gold">{t("footer.adminLogin")}</Link></li>
           </ul>
         </div>
 
         <div>
-          <h4 className="text-[0.65rem] uppercase tracking-[0.3em] text-gold">Contact</h4>
+          <h4 className="text-[0.65rem] uppercase tracking-[0.3em] text-gold">{t("footer.contact")}</h4>
           <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
             <li><a href={siteConfig.phoneHref} className="flex items-center gap-2 hover:text-gold"><Phone className="h-4 w-4" /> {siteConfig.phone}</a></li>
             <li><a href={siteConfig.whatsappHref} target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-gold"><MessageCircle className="h-4 w-4" /> WhatsApp</a></li>

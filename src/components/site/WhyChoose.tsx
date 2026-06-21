@@ -1,12 +1,14 @@
 import { motion } from "framer-motion";
 import { Award, Sparkles, Zap, Wand2, UserCheck } from "lucide-react";
 import { SectionHeader } from "./SectionHeader";
+import { useI18n } from "@/lib/i18n";
 import { whyChoose } from "@/lib/site-config";
 import img from "@/assets/gallery-1.png.asset.json";
 
 const icons = [Award, Sparkles, Zap, Wand2, UserCheck];
 
 export function WhyChoose() {
+  const { t } = useI18n();
   return (
     <section id="why" className="relative overflow-hidden bg-gradient-onyx py-28 md:py-36">
       <div
@@ -17,8 +19,8 @@ export function WhyChoose() {
 
       <div className="relative mx-auto max-w-7xl px-6">
         <SectionHeader
-          eyebrow="Why Choose Us"
-          title={<>The Sharm Cinematic <em className="text-gradient-gold not-italic">difference.</em></>}
+          eyebrow={t("why.eyebrow")}
+          title={<>{t("why.titleA")} <em className="text-gradient-gold not-italic">{t("why.titleB")}</em></>}
         />
 
         <div className="grid gap-px overflow-hidden rounded-sm border border-border bg-border md:grid-cols-3 lg:grid-cols-5">
