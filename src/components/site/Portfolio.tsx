@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { useI18n } from "@/lib/i18n";
 import { SectionHeader } from "./SectionHeader";
 import g1 from "@/assets/gallery-1.png.asset.json";
 import g2 from "@/assets/gallery-2.jpg.asset.json";
@@ -53,19 +54,40 @@ const filters: { key: Cat; label: string }[] = [
 ];
 
 export function Portfolio() {
+  const { t } = useI18n();
   const [cat, setCat] = useState<Cat>("all");
-  const [active, setActive] = useState<string | null>(null);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  const visible = items.filter((i) => cat === "all" || i.cat === cat);
+  const visible = useMemo(() => items.filter((i) => cat === "all" || i.cat === cat), [cat]);
+  const active = activeIndex != null ? visible[activeIndex] : null;
+
+  const next = useCallback(() => {
+    setActiveIndex((idx) => (idx == null ? null : (idx + 1) % visible.length));
+  }, [visible.length]);
+  const prev = useCallback(() => {
+    setActiveIndex((idx) => (idx == null ? null : (idx - 1 + visible.length) % visible.length));
+  }, [visible.length]);
+
+  useEffect(() => {
+    if (activeIndex == null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setActiveIndex(null);
+      if (e.key === "ArrowRight") next();
+      if (e.key === "ArrowLeft") prev();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [activeIndex, next, prev]);
 
   return (
     <section id="portfolio" className="relative bg-gradient-onyx py-28 md:py-36">
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeader
-          eyebrow="Portfolio"
-          title={<>A gallery of <em className="text-gradient-gold not-italic">light & story.</em></>}
-          description="A curated selection of cinematic frames captured across Sharm El Sheikh."
+          eyebrow={t("portfolio.eyebrow")}
+          title={<>{t("portfolio.titleA")} <em className="text-gradient-gold not-italic">{t("portfolio.titleB")}</em></>}
+          description={t("portfolio.desc")}
         />
+
 
         <div className="mb-12 flex flex-wrap justify-center gap-2">
           {filters.map((f) => (
@@ -88,11 +110,11 @@ export function Portfolio() {
           className="columns-1 gap-5 sm:columns-2 lg:columns-3 xl:columns-4 [column-fill:_balance]"
         >
           <AnimatePresence mode="popLayout">
-            {visible.map((i) => (
+            {visible.map((i, idx) => (
               <motion.button
                 layout
                 key={i.src}
-                onClick={() => setActive(i.src)}
+                onClick={() => setActiveIndex(idx)}
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
@@ -121,35 +143,67 @@ export function Portfolio() {
         </motion.div>
       </div>
 
+
       <AnimatePresence>
         {active && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setActive(null)}
+            onClick={() => setActiveIndex(null)}
             className="fixed inset-0 z-[100] flex items-center justify-center bg-onyx/95 p-6 backdrop-blur-xl"
           >
             <button
               className="absolute right-6 top-6 rounded-full border border-gold/40 p-3 text-gold hover:bg-gold/10"
-              onClick={() => setActive(null)}
+              onClick={(e) => { e.stopPropagation(); setActiveIndex(null); }}
               aria-label="Close"
             >
               <X />
             </button>
-            <motion.img
-              key={active}
-              initial={{ scale: 0.9, opacity: 0 }}
+            <button
+              className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full border border-gold/40 bg-onyx/70 p-3 text-gold backdrop-blur-xl hover:bg-gold/10"
+              onClick={(e) => { e.stopPropagation(); prev(); }}
+              aria-label="Previous"
+            >
+              <ChevronLeft />
+            </button>
+            <button
+              className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full border border-gold/40 bg-onyx/70 p-3 text-gold backdrop-blur-xl hover:bg-gold/10"
+              onClick={(e) => { e.stopPropagation(); next(); }}
+              aria-label="Next"
+            >
+              <ChevronRight />
+            </button>
+            <motion.div
+              key={active.src}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              onDragEnd={(_, info) => {
+                if (info.offset.x < -80) next();
+                else if (info.offset.x > 80) prev();
+              }}
+              initial={{ scale: 0.92, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              src={active}
-              alt="Selected portfolio image"
-              className="max-h-[90vh] max-w-[92vw] rounded-sm object-contain shadow-luxe"
+              exit={{ scale: 0.92, opacity: 0 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="relative flex max-h-[90vh] max-w-[92vw] flex-col items-center"
               onClick={(e) => e.stopPropagation()}
-            />
+            >
+              <img
+                src={active.src}
+                alt={active.alt}
+                draggable={false}
+                className="max-h-[85vh] max-w-[92vw] select-none rounded-sm object-contain shadow-luxe"
+              />
+              <div className="mt-4 text-[0.65rem] uppercase tracking-[0.4em] text-gold/80">
+                {(activeIndex ?? 0) + 1} / {visible.length} · {active.cat}
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
     </section>
   );
 }
+
