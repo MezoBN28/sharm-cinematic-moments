@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-
-const links = [
-  { href: "#home", label: "Home" },
-  { href: "#about", label: "About" },
-  { href: "#portfolio", label: "Portfolio" },
-  { href: "#services", label: "Services" },
-  { href: "#why", label: "Why Us" },
-  { href: "#contact", label: "Contact" },
-];
+import { LanguageToggle } from "./LanguageToggle";
+import { useI18n } from "@/lib/i18n";
 
 export function Navbar() {
+  const { t } = useI18n();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+
+  const links = [
+    { href: "#home", label: t("nav.home") },
+    { href: "#about", label: t("nav.about") },
+    { href: "#portfolio", label: t("nav.portfolio") },
+    { href: "#services", label: t("nav.services") },
+    { href: "#why", label: t("nav.why") },
+    { href: "#contact", label: t("nav.contact") },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -49,21 +52,25 @@ export function Navbar() {
               {l.label}
             </a>
           ))}
+          <LanguageToggle />
           <a
             href="#booking"
             className="rounded-full bg-gradient-gold px-5 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground shadow-gold-glow transition-transform hover:scale-105"
           >
-            Book Now
+            {t("nav.book")}
           </a>
         </nav>
 
-        <button
-          aria-label="Toggle menu"
-          onClick={() => setOpen(!open)}
-          className="text-gold md:hidden"
-        >
-          {open ? <X /> : <Menu />}
-        </button>
+        <div className="flex items-center gap-3 md:hidden">
+          <LanguageToggle />
+          <button
+            aria-label="Toggle menu"
+            onClick={() => setOpen(!open)}
+            className="text-gold"
+          >
+            {open ? <X /> : <Menu />}
+          </button>
+        </div>
       </div>
 
       {open && (
@@ -84,7 +91,7 @@ export function Navbar() {
               onClick={() => setOpen(false)}
               className="mt-3 rounded-full bg-gradient-gold py-3 text-center text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground"
             >
-              Book Now
+              {t("nav.book")}
             </a>
           </div>
         </div>
