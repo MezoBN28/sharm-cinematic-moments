@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Star, CheckCircle2, Instagram, Loader2 } from "lucide-react";
 import { Toaster, toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { useServerFn } from "@tanstack/react-start";
+import { getReviewBooking, submitReview } from "@/lib/reviews.functions";
 import { siteConfig } from "@/lib/site-config";
 
 type Search = { id?: string };
@@ -31,39 +32,40 @@ function RateSessionPage() {
   const [hover, setHover] = useState(0);
   const [comment, setComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const fetchBooking = useServerFn(getReviewBooking);
+  const sendReview = useServerFn(submitReview);
 
   useEffect(() => {
     let cancelled = false;
     async function load() {
       if (!id) { setStatus("missing"); return; }
-      const { data, error } = await (supabase.rpc as any)("get_review_booking", { _id: id });
-      if (cancelled) return;
-      if (error || !data || (Array.isArray(data) && data.length === 0)) {
-        setStatus("missing"); return;
+      try {
+        const row = await fetchBooking({ data: { id } });
+        if (cancelled) return;
+        if (!row) { setStatus("missing"); return; }
+        setName(row.full_name);
+        setStatus(row.already_reviewed ? "already" : "ready");
+      } catch {
+        if (!cancelled) setStatus("missing");
       }
-      const row = Array.isArray(data) ? data[0] : data;
-      setName(row.full_name);
-      setStatus(row.already_reviewed ? "already" : "ready");
     }
     load();
     return () => { cancelled = true; };
-  }, [id]);
+  }, [id, fetchBooking]);
 
   async function submit() {
     if (!id || rating < 1) { toast.error("Please choose a star rating"); return; }
     setSubmitting(true);
-    const { error } = await (supabase.rpc as any)("submit_review", {
-      _booking_id: id,
-      _rating: rating,
-      _comment: comment,
-    });
-    setSubmitting(false);
-    if (error) {
-      if (error.message?.includes("already_reviewed")) setStatus("already");
-      else toast.error(error.message || "Could not submit review");
-      return;
+    try {
+      await sendReview({ data: { booking_id: id, rating, comment } });
+      setStatus("submitted");
+    } catch (err: any) {
+      const msg = String(err?.message || "");
+      if (msg.includes("already_reviewed")) setStatus("already");
+      else toast.error("Could not submit review");
+    } finally {
+      setSubmitting(false);
     }
-    setStatus("submitted");
   }
 
   return (
