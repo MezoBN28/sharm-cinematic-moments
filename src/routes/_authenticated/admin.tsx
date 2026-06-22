@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { Toaster, toast } from "sonner";
 import * as XLSX from "xlsx";
-import { LogOut, Search, Trash2, Download, ShieldAlert } from "lucide-react";
+import { LogOut, Search, Trash2, Download, ShieldAlert, Link2, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/admin")({
@@ -40,6 +40,19 @@ function AdminDashboard() {
   const [visitors, setVisitors] = useState({ today: 0, week: 0, todayUnique: 0, weekUnique: 0 });
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<"all" | Booking["status"]>("all");
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  async function copyReviewLink(id: string) {
+    const url = `${window.location.origin}/rate-session?id=${id}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopiedId(id);
+      toast.success("Review link copied", { description: "Send it to your client via WhatsApp." });
+      setTimeout(() => setCopiedId((c) => (c === id ? null : c)), 2200);
+    } catch {
+      toast.error("Could not copy link", { description: url });
+    }
+  }
 
   async function loadVisitors() {
     const now = new Date();
@@ -352,9 +365,19 @@ function AdminDashboard() {
                       </select>
                     </td>
                     <td className="px-4 py-4">
-                      <button onClick={() => remove(b.id)} className="text-muted-foreground hover:text-destructive" aria-label="Delete">
-                        <Trash2 className="h-4 w-4" />
-                      </button>
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => copyReviewLink(b.id)}
+                          className="inline-flex items-center gap-1.5 rounded-full border border-gold/50 px-3 py-1.5 text-[0.6rem] uppercase tracking-[0.2em] text-gold transition-all hover:bg-gold/10"
+                          aria-label="Complete session and copy review link"
+                        >
+                          {copiedId === b.id ? <Check className="h-3 w-3" /> : <Link2 className="h-3 w-3" />}
+                          {copiedId === b.id ? "Copied" : "Complete"}
+                        </button>
+                        <button onClick={() => remove(b.id)} className="text-muted-foreground hover:text-destructive" aria-label="Delete">
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

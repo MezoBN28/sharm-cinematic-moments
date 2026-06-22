@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ThankYouRouteImport } from './routes/thank-you'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as RateSessionRouteImport } from './routes/rate-session'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -25,6 +26,11 @@ const ThankYouRoute = ThankYouRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RateSessionRoute = RateSessionRouteImport.update({
+  id: '/rate-session',
+  path: '/rate-session',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -55,6 +61,7 @@ const ApiPublicNotifyBookingRoute = ApiPublicNotifyBookingRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/rate-session': typeof RateSessionRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/thank-you': typeof ThankYouRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -63,6 +70,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/rate-session': typeof RateSessionRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/thank-you': typeof ThankYouRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -73,6 +81,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/rate-session': typeof RateSessionRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/thank-you': typeof ThankYouRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
@@ -83,6 +92,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/rate-session'
     | '/sitemap.xml'
     | '/thank-you'
     | '/admin'
@@ -91,6 +101,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/rate-session'
     | '/sitemap.xml'
     | '/thank-you'
     | '/admin'
@@ -100,6 +111,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/rate-session'
     | '/sitemap.xml'
     | '/thank-you'
     | '/_authenticated/admin'
@@ -110,6 +122,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  RateSessionRoute: typeof RateSessionRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ThankYouRoute: typeof ThankYouRoute
   ApiPublicNotifyBookingRoute: typeof ApiPublicNotifyBookingRoute
@@ -129,6 +142,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rate-session': {
+      id: '/rate-session'
+      path: '/rate-session'
+      fullPath: '/rate-session'
+      preLoaderRoute: typeof RateSessionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -184,6 +204,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  RateSessionRoute: RateSessionRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   ThankYouRoute: ThankYouRoute,
   ApiPublicNotifyBookingRoute: ApiPublicNotifyBookingRoute,

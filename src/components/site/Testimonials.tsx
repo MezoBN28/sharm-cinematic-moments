@@ -1,11 +1,14 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Quote, Star, ChevronLeft, ChevronRight } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { SectionHeader } from "./SectionHeader";
-import { testimonials } from "@/lib/site-config";
+import { testimonials as staticTestimonials } from "@/lib/site-config";
 import { useI18n } from "@/lib/i18n";
+import { supabase } from "@/integrations/supabase/client";
+
+type Item = { name: string; from?: string; rating: number; quote: string };
 
 function initials(name: string) {
   return name
@@ -19,6 +22,7 @@ function initials(name: string) {
 
 export function Testimonials() {
   const { t } = useI18n();
+  const [reviews, setReviews] = useState<Item[]>([]);
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: "start" },
     [Autoplay({ delay: 5500, stopOnInteraction: false, stopOnMouseEnter: true })],
@@ -29,12 +33,41 @@ export function Testimonials() {
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
   useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      const { data } = await (supabase.from as any)("reviews")
+        .select("full_name, rating, comment, created_at")
+        .order("created_at", { ascending: false })
+        .limit(24);
+      if (cancelled || !data) return;
+      setReviews(
+        data
+          .filter((r: any) => r.comment && r.comment.trim().length > 0)
+          .map((r: any) => ({ name: r.full_name, rating: r.rating, quote: r.comment as string })),
+      );
+    }
+    load();
+    const channel = supabase
+      .channel("reviews-public")
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "reviews" }, (p) => {
+        const r = p.new as any;
+        if (!r?.comment) return;
+        setReviews((prev) => [{ name: r.full_name, rating: r.rating, quote: r.comment }, ...prev]);
+      })
+      .subscribe();
+    return () => { cancelled = true; supabase.removeChannel(channel); };
+  }, []);
+
+  const items = useMemo<Item[]>(() => [...reviews, ...staticTestimonials], [reviews]);
+
+  useEffect(() => {
     if (!emblaApi) return;
     const onSelect = () => setSelectedIndex(emblaApi.selectedScrollSnap());
     emblaApi.on("select", onSelect);
     onSelect();
+    emblaApi.reInit();
     return () => { emblaApi.off("select", onSelect); };
-  }, [emblaApi]);
+  }, [emblaApi, items.length]);
 
   return (
     <section className="relative bg-background py-28 md:py-36">
@@ -47,8 +80,8 @@ export function Testimonials() {
         <div className="relative">
           <div ref={emblaRef} className="overflow-hidden">
             <div className="flex">
-              {testimonials.map((tt, i) => (
-                <div key={tt.name} className="min-w-0 shrink-0 grow-0 basis-full px-3 md:basis-1/2 lg:basis-1/3">
+              {items.map((tt, i) => (
+                <div key={`${tt.name}-${i}`} className="min-w-0 shrink-0 grow-0 basis-full px-3 md:basis-1/2 lg:basis-1/3">
                   <motion.figure
                     initial={{ opacity: 0, y: 24 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -100,8 +133,8 @@ export function Testimonials() {
             <ChevronRight className="h-5 w-5" />
           </button>
 
-          <div className="mt-10 flex justify-center gap-2">
-            {testimonials.map((_, i) => (
+          <div className="mt-10 flex flex-wrap justify-center gap-2">
+            {items.map((_, i) => (
               <button
                 key={i}
                 onClick={() => emblaApi?.scrollTo(i)}
