@@ -144,30 +144,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      get_review_booking: {
-        Args: { _id: string }
-        Returns: {
-          already_reviewed: boolean
-          full_name: string
-        }[]
-      }
-      submit_review: {
-        Args: { _booking_id: string; _comment: string; _rating: number }
-        Returns: {
-          booking_id: string
-          comment: string | null
-          created_at: string
-          full_name: string
-          id: string
-          rating: number
-        }
-        SetofOptions: {
-          from: "*"
-          to: "reviews"
-          isOneToOne: true
-          isSetofReturn: false
-        }
-      }
+      [_ in never]: never
     }
     Enums: {
       app_role: "admin" | "user"
