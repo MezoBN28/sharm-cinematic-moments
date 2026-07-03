@@ -170,3 +170,8 @@
     font-family: var(--font-display);
   }
 }
+
+/* Hide Lovable badge globally when deployed outside Lovable hosting. */
+#lovable-badge {
+  display: none !important;
+}
