@@ -26,6 +26,8 @@ export function BookingForm() {
   const navigate = useNavigate();
   const { t } = useI18n();
 
+  const submitBooking = useServerFn(createBooking);
+
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
@@ -39,23 +41,22 @@ export function BookingForm() {
       return;
     }
     setLoading(true);
-    const { error } = await supabase
-      .from("bookings")
-      .insert({
-        ...parsed.data,
-        service_type: parsed.data.service_type || null,
-        notes: parsed.data.notes || null,
+    try {
+      await submitBooking({
+        data: {
+          ...parsed.data,
+          service_type: parsed.data.service_type || null,
+          notes: parsed.data.notes || null,
+        },
       });
-    setLoading(false);
-    if (error) {
-      toast.error("Booking failed", { description: error.message });
+    } catch (err) {
+      setLoading(false);
+      toast.error("Booking failed", {
+        description: err instanceof Error ? err.message : "Please try again.",
+      });
       return;
     }
-    void fetch("/api/public/notify-booking", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(parsed.data),
-    }).catch(() => {});
+    setLoading(false);
     form.reset();
     navigate({ to: "/thank-you" });
   }
