@@ -3,7 +3,8 @@ import { motion } from "framer-motion";
 import { useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { useServerFn } from "@tanstack/react-start";
+import { createBooking } from "@/lib/bookings.functions";
 import { SectionHeader } from "./SectionHeader";
 import { services } from "@/lib/site-config";
 import { useI18n } from "@/lib/i18n";
@@ -25,6 +26,8 @@ export function BookingForm() {
   const navigate = useNavigate();
   const { t } = useI18n();
 
+  const submitBooking = useServerFn(createBooking);
+
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
@@ -38,23 +41,22 @@ export function BookingForm() {
       return;
     }
     setLoading(true);
-    const { error } = await supabase
-      .from("bookings")
-      .insert({
-        ...parsed.data,
-        service_type: parsed.data.service_type || null,
-        notes: parsed.data.notes || null,
+    try {
+      await submitBooking({
+        data: {
+          ...parsed.data,
+          service_type: parsed.data.service_type || null,
+          notes: parsed.data.notes || null,
+        },
       });
-    setLoading(false);
-    if (error) {
-      toast.error("Booking failed", { description: error.message });
+    } catch (err) {
+      setLoading(false);
+      toast.error("Booking failed", {
+        description: err instanceof Error ? err.message : "Please try again.",
+      });
       return;
     }
-    void fetch("/api/public/notify-booking", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(parsed.data),
-    }).catch(() => {});
+    setLoading(false);
     form.reset();
     navigate({ to: "/thank-you" });
   }

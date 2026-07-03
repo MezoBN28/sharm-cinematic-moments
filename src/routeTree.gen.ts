@@ -16,7 +16,6 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
-import { Route as ApiPublicNotifyBookingRouteImport } from './routes/api/public/notify-booking'
 
 const ThankYouRoute = ThankYouRouteImport.update({
   id: '/thank-you',
@@ -52,11 +51,6 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const ApiPublicNotifyBookingRoute = ApiPublicNotifyBookingRouteImport.update({
-  id: '/api/public/notify-booking',
-  path: '/api/public/notify-booking',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -65,7 +59,6 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/thank-you': typeof ThankYouRoute
   '/admin': typeof AuthenticatedAdminRoute
-  '/api/public/notify-booking': typeof ApiPublicNotifyBookingRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -74,7 +67,6 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/thank-you': typeof ThankYouRoute
   '/admin': typeof AuthenticatedAdminRoute
-  '/api/public/notify-booking': typeof ApiPublicNotifyBookingRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -85,7 +77,6 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/thank-you': typeof ThankYouRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
-  '/api/public/notify-booking': typeof ApiPublicNotifyBookingRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -96,16 +87,8 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/thank-you'
     | '/admin'
-    | '/api/public/notify-booking'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/auth'
-    | '/rate-session'
-    | '/sitemap.xml'
-    | '/thank-you'
-    | '/admin'
-    | '/api/public/notify-booking'
+  to: '/' | '/auth' | '/rate-session' | '/sitemap.xml' | '/thank-you' | '/admin'
   id:
     | '__root__'
     | '/'
@@ -115,7 +98,6 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/thank-you'
     | '/_authenticated/admin'
-    | '/api/public/notify-booking'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -125,7 +107,6 @@ export interface RootRouteChildren {
   RateSessionRoute: typeof RateSessionRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ThankYouRoute: typeof ThankYouRoute
-  ApiPublicNotifyBookingRoute: typeof ApiPublicNotifyBookingRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -179,13 +160,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/api/public/notify-booking': {
-      id: '/api/public/notify-booking'
-      path: '/api/public/notify-booking'
-      fullPath: '/api/public/notify-booking'
-      preLoaderRoute: typeof ApiPublicNotifyBookingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -207,7 +181,6 @@ const rootRouteChildren: RootRouteChildren = {
   RateSessionRoute: RateSessionRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   ThankYouRoute: ThankYouRoute,
-  ApiPublicNotifyBookingRoute: ApiPublicNotifyBookingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
